@@ -19,6 +19,12 @@ workflows:
       app_store_connect: QuarkGPS_AppStoreConnect
 
     scripts:
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          keychain initialize
+          keychain add-certificates
+
       - name: Apply code signing settings
         script: |
           xcode-project use-profiles
