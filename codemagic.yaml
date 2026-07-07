@@ -8,7 +8,9 @@ workflows:
       vars:
         XCODE_PROJECT: "QuarkGPS.xcodeproj"
         XCODE_SCHEME: "QuarkGPS"
-        BUNDLE_ID: "com.quarkgps"
+      ios_signing:
+        distribution_type: app_store
+        bundle_identifier: com.quarkgps
       xcode: 16.4
       cocoapods: default
 
@@ -16,16 +18,6 @@ workflows:
       app_store_connect: QuarkGPS_AppStoreConnect
 
     scripts:
-      - name: Fetch signing files
-        script: |
-          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
-          keychain initialize
-          keychain add-certificates
-
-      - name: Apply code signing settings
-        script: |
-          xcode-project use-profiles
-
       - name: Set build number
         script: |
           agvtool new-version -all $BUILD_NUMBER || true
