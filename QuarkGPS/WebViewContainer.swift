@@ -122,12 +122,11 @@ struct WebViewContainer: UIViewRepresentable {
         webView.navigationDelegate = context.coordinator
         webView.uiDelegate = context.coordinator
         webView.allowsBackForwardNavigationGestures = true
-        webView.customUserAgent = "QuarkGPS-iOS/1.0"
         webView.scrollView.contentInsetAdjustmentBehavior = .never
 
         viewModel.attach(webView: webView)
         viewModel.requestLocationPermissionIfNeeded()
-        webView.load(URLRequest(url: url, cachePolicy: .reloadRevalidatingCacheData))
+        webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData))
 
         return webView
     }
@@ -161,6 +160,18 @@ struct WebViewContainer: UIViewRepresentable {
                 webView.load(navigationAction.request)
             }
             return nil
+        }
+
+        func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
+            if let response = navigationResponse.response as? HTTPURLResponse, response.statusCode == 419 {
+                // Laravel returns 419 when CSRF/session token is stale. Force a clean reload.
+                let freshRequest = URLRequest(url: parent.url, cachePolicy: .reloadIgnoringLocalCacheData)
+                webView.load(freshRequest)
+                decisionHandler(.cancel)
+                return
+            }
+
+            decisionHandler(.allow)
         }
 
         func webViewWebContentProcessDidTerminate(_ webView: WKWebView) {
