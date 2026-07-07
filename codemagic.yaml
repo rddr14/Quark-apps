@@ -18,7 +18,13 @@ workflows:
     integrations:
       app_store_connect: QuarkGPS_AppStoreConnect
 
-    scripts:
+   scripts:
+      - name: Fetch signing files
+        script: |
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create
+          keychain initialize
+          keychain add-certificates
+
       - name: Apply code signing settings
         script: |
           xcode-project use-profiles
@@ -26,6 +32,23 @@ workflows:
       - name: Set build number
         script: |
           agvtool new-version -all $BUILD_NUMBER || true
+
+      - name: Build unsigned archive
+        script: |
+          xcodebuild \
+            -project "$XCODE_PROJECT" \
+            -scheme "$XCODE_SCHEME" \
+            -configuration Release \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$CM_BUILD_DIR/build/QuarkGPS.xcarchive" \
+            clean archive
+
+      - name: Export IPA with manual signing
+        script: |
+          xcodebuild -exportArchive \
+            -archivePath "$CM_BUILD_DIR/build/QuarkGPS.xcarchive" \
+            -exportPath "$CM_BUILD_DIR/build/export" \
+            -exportOptionsPlist /Users/builder/export_options.plist
 
       - name: Build unsigned archive
         script: |
