@@ -126,7 +126,7 @@ struct WebViewContainer: UIViewRepresentable {
 
         viewModel.attach(webView: webView)
         viewModel.requestLocationPermissionIfNeeded()
-        webView.load(URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData))
+        webView.load(URLRequest(url: url, cachePolicy: .useProtocolCachePolicy))
 
         return webView
     }
@@ -165,7 +165,7 @@ struct WebViewContainer: UIViewRepresentable {
         func webView(_ webView: WKWebView, decidePolicyFor navigationResponse: WKNavigationResponse, decisionHandler: @escaping (WKNavigationResponsePolicy) -> Void) {
             if let response = navigationResponse.response as? HTTPURLResponse, response.statusCode == 419 {
                 // Laravel returns 419 when CSRF/session token is stale. Force a clean reload.
-                let freshRequest = URLRequest(url: parent.url, cachePolicy: .reloadIgnoringLocalCacheData)
+                let freshRequest = URLRequest(url: parent.url, cachePolicy: .reloadIgnoringLocalAndRemoteCacheData)
                 webView.load(freshRequest)
                 decisionHandler(.cancel)
                 return
