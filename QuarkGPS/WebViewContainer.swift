@@ -7,6 +7,10 @@ final class WebViewViewModel: NSObject, ObservableObject {
     private var locationManager: CLLocationManager?
     private weak var webView: WKWebView?
     private var injectedLocation = false
+    private var didEnterBackgroundAt: Date?
+
+    // Force refresh only after long inactivity to avoid stale data while preserving normal UX.
+    private let refreshAfterBackgroundInterval: TimeInterval = 15 * 60
 
     func attach(webView: WKWebView) {
         self.webView = webView
@@ -28,6 +32,19 @@ final class WebViewViewModel: NSObject, ObservableObject {
         @unknown default:
             break
         }
+    }
+
+    func markDidEnterBackground() {
+        didEnterBackgroundAt = Date()
+    }
+
+    func reloadIfAppWasBackgroundedForLongTime() {
+        guard let didEnterBackgroundAt else { return }
+        let inactiveTime = Date().timeIntervalSince(didEnterBackgroundAt)
+        guard inactiveTime >= refreshAfterBackgroundInterval else { return }
+
+        webView?.reloadFromOrigin()
+        self.didEnterBackgroundAt = nil
     }
 
     private func injectGeolocation(latitude: Double, longitude: Double) {
