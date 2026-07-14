@@ -235,6 +235,13 @@ workflows:
             echo "Add your Android project into this repository and set ANDROID_PROJECT_DIR in codemagic.yaml."
             exit 1
           }
+      - name: Validate Android signing variables
+        script: |
+          [[ -n "$CM_KEYSTORE_PATH" ]] || { echo "Missing CM_KEYSTORE_PATH from android_signing. Check keystore reference name in codemagic.yaml."; exit 1; }
+          [[ -f "$CM_KEYSTORE_PATH" ]] || { echo "Keystore file not found at CM_KEYSTORE_PATH=$CM_KEYSTORE_PATH"; exit 1; }
+          [[ -n "$CM_KEYSTORE_PASSWORD" ]] || { echo "Missing CM_KEYSTORE_PASSWORD from android_signing."; exit 1; }
+          [[ -n "$CM_KEY_ALIAS" || -n "$CM_KEYSTORE_ALIAS" ]] || { echo "Missing key alias from android_signing (CM_KEY_ALIAS/CM_KEYSTORE_ALIAS)."; exit 1; }
+          [[ -n "$CM_KEY_PASSWORD" ]] || { echo "Missing CM_KEY_PASSWORD from android_signing."; exit 1; }
       - name: Build Android App Bundle (release)
         script: |
           cd "$CM_BUILD_DIR/$ANDROID_PROJECT_DIR"
@@ -277,6 +284,14 @@ workflows:
             echo "Add your Android project into this repository and set ANDROID_PROJECT_DIR in codemagic.yaml."
             exit 1
           }
+
+      - name: Validate Android signing variables
+        script: |
+          [[ -n "$CM_KEYSTORE_PATH" ]] || { echo "Missing CM_KEYSTORE_PATH from android_signing. Check keystore reference name in codemagic.yaml."; exit 1; }
+          [[ -f "$CM_KEYSTORE_PATH" ]] || { echo "Keystore file not found at CM_KEYSTORE_PATH=$CM_KEYSTORE_PATH"; exit 1; }
+          [[ -n "$CM_KEYSTORE_PASSWORD" ]] || { echo "Missing CM_KEYSTORE_PASSWORD from android_signing."; exit 1; }
+          [[ -n "$CM_KEY_ALIAS" || -n "$CM_KEYSTORE_ALIAS" ]] || { echo "Missing key alias from android_signing (CM_KEY_ALIAS/CM_KEYSTORE_ALIAS)."; exit 1; }
+          [[ -n "$CM_KEY_PASSWORD" ]] || { echo "Missing CM_KEY_PASSWORD from android_signing."; exit 1; }
 
       - name: Build Android App Bundle (release)
         script: |

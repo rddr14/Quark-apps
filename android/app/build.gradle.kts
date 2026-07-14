@@ -14,6 +14,13 @@ val hasReleaseSigning = !keystorePath.isNullOrBlank() &&
     !keystorePassword.isNullOrBlank() &&
     !keyPassword.isNullOrBlank()
 
+if (System.getenv("CI") == "true" && !hasReleaseSigning) {
+    throw GradleException(
+        "Android release signing variables are missing in CI. " +
+            "Check android_signing keystore reference in codemagic.yaml."
+    )
+}
+
 android {
     namespace = "com.quarkgps"
     compileSdk = 34
