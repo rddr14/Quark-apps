@@ -69,9 +69,14 @@ workflows:
           make_icon 152 AppIcon-76@2x.png
           make_icon 167 AppIcon-83.5@2x.png
 
+      - name: Configure bundle identifier
+        script: |
+          PBXPROJ_PATH="$CM_BUILD_DIR/$XCODE_PROJECT/project.pbxproj"
+          sed -i '' "s/PRODUCT_BUNDLE_IDENTIFIER = com\\.quarkgps;/PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID;/g" "$PBXPROJ_PATH"
+
       - name: Apply code signing settings
         script: |
-          xcode-project use-profiles
+          xcode-project use-profiles --archive-method app-store --code-signing-setup-verbose-logging
 
       - name: Set build number
         script: |
@@ -176,9 +181,14 @@ workflows:
           make_icon 152 AppIcon-76@2x.png
           make_icon 167 AppIcon-83.5@2x.png
 
+      - name: Configure bundle identifier
+        script: |
+          PBXPROJ_PATH="$CM_BUILD_DIR/$XCODE_PROJECT/project.pbxproj"
+          sed -i '' "s/PRODUCT_BUNDLE_IDENTIFIER = com\\.quarkgps;/PRODUCT_BUNDLE_IDENTIFIER = $BUNDLE_ID;/g" "$PBXPROJ_PATH"
+
       - name: Apply code signing settings
         script: |
-          xcode-project use-profiles
+          xcode-project use-profiles --archive-method app-store --code-signing-setup-verbose-logging
 
       - name: Set build number
         script: |
