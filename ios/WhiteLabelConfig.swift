@@ -28,6 +28,12 @@ enum WhiteLabelResolver {
             appName: "RM Rastreadores",
             siteURL: URL(string: "https://rastrear.rmrastreadores.com/")!,
             allowedHost: "rastrear.rmrastreadores.com"
+        ),
+        "atualizasom": WhiteLabelConfig(
+            key: "atualizasom",
+            appName: "Atualizasom Rastreamento",
+            siteURL: URL(string: "https://rastreamento.atualizasom.com.br/")!,
+            allowedHost: "rastreamento.atualizasom.com.br"
         )
     ]
 
