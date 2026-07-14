@@ -223,6 +223,7 @@ workflows:
         ANDROID_MODULE: "app"
         ANDROID_FLAVOR: "Quark"
         ANDROID_APPLICATION_ID: "com.quarkgps"
+        ANDROID_ICON_SOURCE: "branding/quarkgps/AppIcon-1024.png"
       java: 17
       groups:
         - quarkgps
@@ -235,6 +236,40 @@ workflows:
             echo "Add your Android project into this repository and set ANDROID_PROJECT_DIR in codemagic.yaml."
             exit 1
           }
+      - name: Generate Android launcher icons
+        script: |
+          SOURCE_ICON="$CM_BUILD_DIR/$ANDROID_ICON_SOURCE"
+          [[ -f "$SOURCE_ICON" ]] || { echo "Android icon source not found: $SOURCE_ICON"; exit 1; }
+
+          generate_icon_set() {
+            local base_dir="$1"
+
+            mkdir -p "$base_dir/mipmap-mdpi" "$base_dir/mipmap-hdpi" "$base_dir/mipmap-xhdpi" "$base_dir/mipmap-xxhdpi" "$base_dir/mipmap-xxxhdpi"
+
+            # Legacy launcher icons
+            sips -z 48 48 "$SOURCE_ICON" --out "$base_dir/mipmap-mdpi/ic_launcher.png" >/dev/null
+            sips -z 72 72 "$SOURCE_ICON" --out "$base_dir/mipmap-hdpi/ic_launcher.png" >/dev/null
+            sips -z 96 96 "$SOURCE_ICON" --out "$base_dir/mipmap-xhdpi/ic_launcher.png" >/dev/null
+            sips -z 144 144 "$SOURCE_ICON" --out "$base_dir/mipmap-xxhdpi/ic_launcher.png" >/dev/null
+            sips -z 192 192 "$SOURCE_ICON" --out "$base_dir/mipmap-xxxhdpi/ic_launcher.png" >/dev/null
+
+            # Round launcher icons
+            sips -z 48 48 "$SOURCE_ICON" --out "$base_dir/mipmap-mdpi/ic_launcher_round.png" >/dev/null
+            sips -z 72 72 "$SOURCE_ICON" --out "$base_dir/mipmap-hdpi/ic_launcher_round.png" >/dev/null
+            sips -z 96 96 "$SOURCE_ICON" --out "$base_dir/mipmap-xhdpi/ic_launcher_round.png" >/dev/null
+            sips -z 144 144 "$SOURCE_ICON" --out "$base_dir/mipmap-xxhdpi/ic_launcher_round.png" >/dev/null
+            sips -z 192 192 "$SOURCE_ICON" --out "$base_dir/mipmap-xxxhdpi/ic_launcher_round.png" >/dev/null
+
+            # Adaptive foreground icons
+            sips -z 108 108 "$SOURCE_ICON" --out "$base_dir/mipmap-mdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 162 162 "$SOURCE_ICON" --out "$base_dir/mipmap-hdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 216 216 "$SOURCE_ICON" --out "$base_dir/mipmap-xhdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 324 324 "$SOURCE_ICON" --out "$base_dir/mipmap-xxhdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 432 432 "$SOURCE_ICON" --out "$base_dir/mipmap-xxxhdpi/ic_launcher_foreground.png" >/dev/null
+          }
+
+          generate_icon_set "$CM_BUILD_DIR/$ANDROID_PROJECT_DIR/app/src/main/res"
+          generate_icon_set "$CM_BUILD_DIR/$ANDROID_PROJECT_DIR/app/src/release/res"
       - name: Validate Android signing variables
         script: |
           [[ -n "$CM_KEYSTORE_PATH" ]] || { echo "Missing CM_KEYSTORE_PATH from android_signing. Check keystore reference name in codemagic.yaml."; exit 1; }
@@ -272,6 +307,7 @@ workflows:
         ANDROID_MODULE: "app"
         ANDROID_FLAVOR: "Aura"
         ANDROID_APPLICATION_ID: "com.aurarastreamento"
+        ANDROID_ICON_SOURCE: "branding/auramonitoramento/AppIcon-1024.png"
       java: 17
       groups:
         - quarkgps
@@ -284,6 +320,41 @@ workflows:
             echo "Add your Android project into this repository and set ANDROID_PROJECT_DIR in codemagic.yaml."
             exit 1
           }
+
+      - name: Generate Android launcher icons
+        script: |
+          SOURCE_ICON="$CM_BUILD_DIR/$ANDROID_ICON_SOURCE"
+          [[ -f "$SOURCE_ICON" ]] || { echo "Android icon source not found: $SOURCE_ICON"; exit 1; }
+
+          generate_icon_set() {
+            local base_dir="$1"
+
+            mkdir -p "$base_dir/mipmap-mdpi" "$base_dir/mipmap-hdpi" "$base_dir/mipmap-xhdpi" "$base_dir/mipmap-xxhdpi" "$base_dir/mipmap-xxxhdpi"
+
+            # Legacy launcher icons
+            sips -z 48 48 "$SOURCE_ICON" --out "$base_dir/mipmap-mdpi/ic_launcher.png" >/dev/null
+            sips -z 72 72 "$SOURCE_ICON" --out "$base_dir/mipmap-hdpi/ic_launcher.png" >/dev/null
+            sips -z 96 96 "$SOURCE_ICON" --out "$base_dir/mipmap-xhdpi/ic_launcher.png" >/dev/null
+            sips -z 144 144 "$SOURCE_ICON" --out "$base_dir/mipmap-xxhdpi/ic_launcher.png" >/dev/null
+            sips -z 192 192 "$SOURCE_ICON" --out "$base_dir/mipmap-xxxhdpi/ic_launcher.png" >/dev/null
+
+            # Round launcher icons
+            sips -z 48 48 "$SOURCE_ICON" --out "$base_dir/mipmap-mdpi/ic_launcher_round.png" >/dev/null
+            sips -z 72 72 "$SOURCE_ICON" --out "$base_dir/mipmap-hdpi/ic_launcher_round.png" >/dev/null
+            sips -z 96 96 "$SOURCE_ICON" --out "$base_dir/mipmap-xhdpi/ic_launcher_round.png" >/dev/null
+            sips -z 144 144 "$SOURCE_ICON" --out "$base_dir/mipmap-xxhdpi/ic_launcher_round.png" >/dev/null
+            sips -z 192 192 "$SOURCE_ICON" --out "$base_dir/mipmap-xxxhdpi/ic_launcher_round.png" >/dev/null
+
+            # Adaptive foreground icons
+            sips -z 108 108 "$SOURCE_ICON" --out "$base_dir/mipmap-mdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 162 162 "$SOURCE_ICON" --out "$base_dir/mipmap-hdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 216 216 "$SOURCE_ICON" --out "$base_dir/mipmap-xhdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 324 324 "$SOURCE_ICON" --out "$base_dir/mipmap-xxhdpi/ic_launcher_foreground.png" >/dev/null
+            sips -z 432 432 "$SOURCE_ICON" --out "$base_dir/mipmap-xxxhdpi/ic_launcher_foreground.png" >/dev/null
+          }
+
+          generate_icon_set "$CM_BUILD_DIR/$ANDROID_PROJECT_DIR/app/src/main/res"
+          generate_icon_set "$CM_BUILD_DIR/$ANDROID_PROJECT_DIR/app/src/release/res"
 
       - name: Validate Android signing variables
         script: |
