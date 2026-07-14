@@ -10,6 +10,7 @@
 		A1B2C3D41A2B3C4D5E6F7011 /* QuarkGPSApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41A2B3C4D5E6F7007 /* QuarkGPSApp.swift */; };
 		A1B2C3D41A2B3C4D5E6F7012 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41A2B3C4D5E6F7008 /* ContentView.swift */; };
 		A1B2C3D41A2B3C4D5E6F7013 /* WebViewContainer.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41A2B3C4D5E6F7009 /* WebViewContainer.swift */; };
+		A1B2C3D41A2B3C4D5E6F7017 /* WhiteLabelConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41A2B3C4D5E6F700C /* WhiteLabelConfig.swift */; };
 		A1B2C3D41A2B3C4D5E6F7014 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A1B2C3D41A2B3C4D5E6F700A /* Assets.xcassets */; };
 /* End PBXBuildFile section */
 
@@ -20,6 +21,7 @@
 		A1B2C3D41A2B3C4D5E6F7009 /* WebViewContainer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewContainer.swift; sourceTree = "<group>"; };
 		A1B2C3D41A2B3C4D5E6F700A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A1B2C3D41A2B3C4D5E6F700B /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A1B2C3D41A2B3C4D5E6F700C /* WhiteLabelConfig.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WhiteLabelConfig.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -55,6 +57,7 @@
 				A1B2C3D41A2B3C4D5E6F7007 /* QuarkGPSApp.swift */,
 				A1B2C3D41A2B3C4D5E6F7008 /* ContentView.swift */,
 				A1B2C3D41A2B3C4D5E6F7009 /* WebViewContainer.swift */,
+				A1B2C3D41A2B3C4D5E6F700C /* WhiteLabelConfig.swift */,
 				A1B2C3D41A2B3C4D5E6F700A /* Assets.xcassets */,
 				A1B2C3D41A2B3C4D5E6F700B /* Info.plist */,
 			);
@@ -133,6 +136,7 @@
 				A1B2C3D41A2B3C4D5E6F7011 /* QuarkGPSApp.swift in Sources */,
 				A1B2C3D41A2B3C4D5E6F7012 /* ContentView.swift in Sources */,
 				A1B2C3D41A2B3C4D5E6F7013 /* WebViewContainer.swift in Sources */,
+				A1B2C3D41A2B3C4D5E6F7017 /* WhiteLabelConfig.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
