@@ -213,7 +213,7 @@ workflows:
   android-quark-release:
     name: Android Quark Release
     max_build_duration: 120
-    instance_type: mac_mini_m2
+    instance_type: linux
 
     environment:
       vars:
@@ -237,7 +237,7 @@ workflows:
       - name: Set up code signing
         script: |
           # Transforma o texto Base64 de volta no arquivo de chave físico
-          echo $CM_KEYSTORE | base64 --decode > $CM_KEYSTORE_PATH
+          printf '%s' "$CM_KEYSTORE" | base64 --decode > "$CM_KEYSTORE_PATH"
 
       - name: Build Android App Bundle (release)
         script: |
@@ -253,7 +253,7 @@ workflows:
       # Configure this variable in Codemagic UI with Google service account JSON
       # to enable automatic Play Store publishing.
       google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS
         track: internal
 
   android-aura-release:
@@ -267,7 +267,10 @@ workflows:
         ANDROID_MODULE: "app"
         ANDROID_FLAVOR: "Aura"
         ANDROID_APPLICATION_ID: "com.aurarastreamento"
+        CM_KEYSTORE_PATH: "/tmp/keystore.jks"
       java: 17
+      groups:
+        - quarkgps
 
     scripts:
       - name: Validate Android project path
@@ -277,6 +280,10 @@ workflows:
             echo "Add your Android project into this repository and set ANDROID_PROJECT_DIR in codemagic.yaml."
             exit 1
           }
+
+      - name: Set up code signing
+        script: |
+          printf '%s' "$CM_KEYSTORE" | base64 --decode > "$CM_KEYSTORE_PATH"
 
       - name: Build Android App Bundle (release)
         script: |
@@ -290,5 +297,5 @@ workflows:
 
     publishing:
       google_play:
-        credentials: $GCLOUD_SERVICE_ACCOUNT_CREDENTIALS
+        credentials: $GOOGLE_PLAY_SERVICE_ACCOUNT_CREDENTIALS
         track: internal

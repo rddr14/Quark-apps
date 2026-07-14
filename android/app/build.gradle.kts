@@ -4,6 +4,16 @@ plugins {
     alias(libs.plugins.kotlin.compose)
 }
 
+val keystorePath = System.getenv("CM_KEYSTORE_PATH")
+val keystoreAlias = System.getenv("CM_KEYSTORE_ALIAS")
+val keystorePassword = System.getenv("CM_KEYSTORE_PASSWORD")
+val keyPassword = System.getenv("CM_KEY_PASSWORD")
+
+val hasReleaseSigning = !keystorePath.isNullOrBlank() &&
+    !keystoreAlias.isNullOrBlank() &&
+    !keystorePassword.isNullOrBlank() &&
+    !keyPassword.isNullOrBlank()
+
 android {
     namespace = "com.quarkgps"
     compileSdk = 34
@@ -39,9 +49,23 @@ android {
         }
     }
 
+    signingConfigs {
+        if (hasReleaseSigning) {
+            create("release") {
+                storeFile = file(keystorePath!!)
+                storePassword = keystorePassword
+                keyAlias = keystoreAlias
+                keyPassword = keyPassword
+            }
+        }
+    }
+
     buildTypes {
         release {
             isMinifyEnabled = false
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
