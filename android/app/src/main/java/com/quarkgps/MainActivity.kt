@@ -5,6 +5,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.graphics.Color
 import android.location.LocationManager
 import android.net.Uri
@@ -149,13 +150,24 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun configureSystemBarsForTheme() {
-        window.statusBarColor = Color.BLACK
-        window.navigationBarColor = Color.BLACK
         val insetsController = WindowCompat.getInsetsController(window, window.decorView)
+        
+        // Verifica se o modo noturno (tema escuro) está ativo no dispositivo
+        val isNightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK == Configuration.UI_MODE_NIGHT_YES
 
-        // Mantem contraste alto em qualquer tema do aparelho.
-        insetsController.isAppearanceLightStatusBars = false
-        insetsController.isAppearanceLightNavigationBars = false
+        if (isNightMode) {
+            // Tema Escuro: Fundo preto, texto/ícones claros (brancos)
+            window.statusBarColor = Color.BLACK
+            window.navigationBarColor = Color.BLACK
+            insetsController.isAppearanceLightStatusBars = false
+            insetsController.isAppearanceLightNavigationBars = false
+        } else {
+            // Tema Claro: Fundo branco, texto/ícones escuros (pretos)
+            window.statusBarColor = Color.WHITE
+            window.navigationBarColor = Color.WHITE
+            insetsController.isAppearanceLightStatusBars = true
+            insetsController.isAppearanceLightNavigationBars = true
+        }
     }
 
 

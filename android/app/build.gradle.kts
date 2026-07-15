@@ -94,6 +94,7 @@ val quarkBranding = loadBrandingConfig("quarkgps")
 val auraBranding = loadBrandingConfig("auramonitoramento")
 val rmBranding = loadBrandingConfig("rmrastreadores")
 val atualizasomBranding = loadBrandingConfig("atualizasom")
+val trackergpsrastreamentoBranding = loadBrandingConfig("trackergpsrastreamento")
 
 val hasReleaseSigning = !keystorePath.isNullOrBlank() &&
     !keystoreAlias.isNullOrBlank() &&
@@ -161,6 +162,15 @@ android {
             versionName = atualizasomBranding.androidVersionName
             resValue("string", "app_name", atualizasomBranding.appName)
             resValue("string", "string_site", atualizasomBranding.siteURL)
+        }
+
+        create("trackergpsrastreamento") {
+            dimension = "brand"
+            applicationId = trackergpsrastreamentoBranding.androidApplicationId
+            versionCode = trackergpsrastreamentoBranding.androidVersionCode
+            versionName = trackergpsrastreamentoBranding.androidVersionName
+            resValue("string", "app_name", trackergpsrastreamentoBranding.appName)
+            resValue("string", "string_site", trackergpsrastreamentoBranding.siteURL)
         }
     }
 

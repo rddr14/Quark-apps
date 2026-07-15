@@ -34,6 +34,12 @@ enum WhiteLabelResolver {
             appName: "Atualizasom Rastreamento",
             siteURL: URL(string: "https://rastreamento.atualizasom.com.br/")!,
             allowedHost: "rastreamento.atualizasom.com.br"
+        ),
+        "trackergpsrastreamento": WhiteLabelConfig(
+            key: "trackergpsrastreamento",
+            appName: "Tracker GPS Rastreamento",
+            siteURL: URL(string: "https://rastreamento.trackergpsrastreamento.com/")!,
+            allowedHost: "rastreamento.trackergpsrastreamento.com"
         )
     ]
 
